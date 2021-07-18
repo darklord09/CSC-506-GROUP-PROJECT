@@ -1,36 +1,74 @@
-<!--starting session to keep user loged in -->
-<?php session_start();?>
+<?php session_start();
+    include("includes/connection.php");
+   if(!isset($_SESSION['id'])){
+    header("location:login.php?ref_denied");
+    }else{
+   @$firstName = $_SESSION['firstName'];
+   @$surName = $_SESSION['surName'];
+   @$phone_number = $_SESSION['phone_number'];
+   @$email = $_SESSION['email'];
+   @$address = $_SESSION['address'];
+?>
+
+ <?php
+
+  //users' post, inserting into database
+
+  if (isset($_POST['post'])) {
+    $post = $_POST['post'];
+    $user_id = $_SESSION['id'];
+
+    //inserting into database
+    $insert = $dbconnect->query("INSERT INTO chat (post,user_id )VALUES('$post', '$user_id')") or die($dbconnect->error); 
+
+    if ($insert = $dbconnect->affected_rows =="1"){
+      echo '<script>alert("post sent Succesful")</script>';
+    }else{
+      echo '<script>alert("Fail to send post")</script>';
+    }
+  }
+?> 
 
 <?php
-include("includes/connection.php");
-?>
- <?php
-        //checking if the user has click the button
-        if(isset($_POST['submit'])){
-          $email = $dbconnect->real_escape_string($_POST['email']);
-          $password = sha1($dbconnect->real_escape_string($_POST['password']));
-          
-          $usercheck = $dbconnect->query("SELECT * FROM users WHERE email = '$email' AND password = '$password'") or die("fail to check<br />" . $dbconnect->error);
-            if($usercheck->num_rows=="1"){
-            //sucsss
-            while($row = $usercheck->fetch_assoc()){
-              //create login sessions
-              $_SESSION['id'] = $row['id'];
-              $_SESSION['firstName'] = $row['firstName'];
-              $_SESSION['surName'] = $row['surName'];
-              $_SESSION['phone_number'] = $row['phoneNumber'];
-              $_SESSION['address'] = $row['address'];
-              $_SESSION['email'] = $row['email'];
-              header("location:student.php");
-              exist();
-            }
-            
-            }else{
-              echo '<script>alert("Incorrect Email or Password")</script>';
-            }
-        }
+  // fetch user post from database to display
+  $fetch_post = $dbconnect->query("SELECT * FROM chat ORDER BY id DESC") or die($dbconnect->error); 
+  $post ="";
+  foreach ($fetch_post as $p) { 
+   $post .= htmlspecialchars( $p['post'])."
 
-      ?>
+    <form action='chat.php?comment=true&post_id=".$p['id']."' method='POST'>
+    <textarea class='form-control input-md' rows='2' cols='20' name='comment_body'></textarea><br>
+    <button type='submit' class='btn btn-default' name='comment'>Comment</button>
+    </form>
+   <br><hr class='hr'>";
+  }
+?>
+
+
+
+<?php
+  //collecting user information
+  include("includes/connection.php");
+  if (isset($_POST['submit'])) {
+    $first_name = $_POST['first_name'];
+    $sur_name = $_POST['sur_name'];
+    $email = $_POST['email'];
+    $address = $_POST['address'];
+    $phone_number = $_POST['phone_number'];
+    $password = sha1($_POST['password']);
+
+    //inserting into database
+    $insert = $dbconnect->query("INSERT INTO users (firstName, surName, email, address, phoneNumber, password) VALUES('$first_name', '$sur_name', '$email', '$address', '$phone_number', '$password')") or die($dbconnect->error); 
+
+    if ($insert = $dbconnect->affected_rows =="1"){
+      echo '<script>alert("Registration Succesful")</script>';
+    }else{
+      echo '<script>alert("Registration Fail")</script>';
+    }
+
+
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -38,7 +76,7 @@ include("includes/connection.php");
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title> login Page</title>
+    <title>Registration Page</title>
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -78,6 +116,24 @@ include("includes/connection.php");
       margin-top:100px;
       font-size:40px;
     }
+     #scroll{
+    margin: 4px, 4px;
+    padding: 4px;
+    background-color: #ccc;
+    color: #fff;
+    width: 400px;
+    height: 450px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    text-align: justify;
+    border-radius: 10px;
+  }
+  .hr{
+    width: 800%;
+    height: 2px;
+    background-color: maroon;
+  }
+   
 
     #footer {
       background: #ddd;
@@ -106,7 +162,7 @@ include("includes/connection.php");
       
       <div class="collapse navbar-collapse">
         <ul class="nav navbar-nav" id="navManu">
-          <li class="active"><a href="#home">Login Page</a></li>
+          <li class="active"><a href="#home">Registration Page</a></li>
         </ul> 
       </div>
     </div>
@@ -121,23 +177,22 @@ include("includes/connection.php");
 
     <!--Registration form-->
   <div class="container">
-    <h1>User Login</h1>
+    <h1>ENGAGING WITH FRIENDS</h1>
     <div class="row col-md-9">
-      <form action="Login.php" method="post">
-
-        <label>Email:</label>
-        <input type="email" name="email" class="form-control"><br>
-
-        <label>Password:</label>
-        <input type="password" name="password" class="form-control"><br><br>
-
-        <div class="form-row">
-          <div class="form-group col-md-6">
-            <button type="submit" class="btn btn-primary" name="submit">Submit</button>
-          </div>
+      <form action="chat.php" method="post">
+        <div class="form-group col-md-6">
+        <label for="comment">Your Post:</label>
+        <textarea class="form-control input-md" id="comment" name="post"></textarea><br>
+        <div class="btn-btn-inline">
+          <button class="btn btn-primary" name="send"> Send</button>
         </div>
-        
+      </div>
       </form>
+
+      <div class="form-group col-md-6" id="scroll">
+        <p>Your Chat Comes Here</p>
+          <?php echo "$post" ; ?>
+        </div>
       
     </div>
   </div>
@@ -159,3 +214,4 @@ include("includes/connection.php");
     <script src="js/bootstrap.min.js"></script>
   </body>
 </html>
+<?php }?>
