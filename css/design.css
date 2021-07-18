@@ -1,0 +1,165 @@
+body {
+	background: #f4f4f4;
+}
+.starter-templete {
+	padding: 40px 15px;
+	text-align: center; 
+}
+
+.navbar {
+	min-height: 35px !important;
+	margin-bottom:0;
+	border-radius: 0; 
+	background-color: #aaa; 
+}
+
+.navbar-nav > li > a, .navbar-brand {
+	padding-top: 6px !important;
+	padding-bottom: 0 !important;
+	height: 35px;
+}
+
+.main-color-bg {
+	background-color: #aaa !important;
+	border-color: #ddd !important;
+	color: #fff !important;
+}
+
+#header {
+	background: #fff;
+	color: #aaa;
+	padding-bottom: 10px;
+	margin-bottom: 15px; 
+	-webkit-box-shadow: #ddd 0px 4px 4px;
+}
+
+#header .create{
+	padding-top: 20px;
+}
+
+.img_div {
+        width: 100%;
+        height:190px;
+        position: relative;
+        margin-top:10px;
+        border-radius: 100px;
+        margin-right: 3px;
+     }
+
+.logo {
+    margin-top:10px;
+    height:90px;
+	position: relative;
+	margin-top:10px;
+	border-radius: 100px;
+	margin-right: 3px;
+}
+
+.breadcrumb{
+	background: #fff;
+	color: #333333;
+	-webkit-box-shadow:0 0 5px #ddd;
+}
+
+.breadcrumb a {
+	color: #000;
+}
+
+.dash-box {
+	text-align: center;
+}
+
+#panel-Wrapper{
+	overflow-y: auto;
+	max-height: 90vh;
+}
+
+#panel-Wrapper::-webkit-scrollbar{
+width:16px;
+background-color:#cccccc;
+
+}
+
+#panel-Wrapper::-webkit-scrollbar-thumb{
+background-color:#ddd;
+border-radius:5px;
+}
+#panel-Wrapper::-webkit-scrollbar-thumb:hover{
+background-color:#aaa;
+border:1px solid #ccc;
+}
+#panel-Wrapper::-webkit-scrollbar-thumb:active{
+background-color:#ddd;
+border:1px solid #ccc;
+}
+
+#panel-Wrapper::-webkit-scrollbar-track{
+border:1px #aaa solid;
+border-radius:10px;
+-webkit-box-shadow:0 0 6px gray inset;
+}
+
+
+
+.error {
+    width: 90%;
+    margin: 5px;
+    padding: 2px;
+    text-align: center;
+    color: red;
+}
+
+.delete_modal {
+	color: red;
+}  
+#main {
+	margin: 10px auto;
+}
+#panel {
+ 	min-height: 340px;
+    -webkit-box-shadow:0 1px 5px #ddd;
+}
+#col {
+ 	min-height: 357px;
+    margin-top: 15px
+}
+.buttons {
+	margin-top: 95px; 
+	width: 100%;
+	background: #aaa;
+	position: relative;
+	height: 1px;
+}
+
+.close_line {
+	width: 100%;
+	background: #000;
+	position: relative;
+	height: 1px;
+}
+
+.details {
+	border: 1px solid #aaa;
+	height: 160px;
+	width: 160px;
+	position: relative;
+} 
+
+#data {
+  min-height: 250px;
+  border: none;
+  border-bottom: none;
+  padding: 10px;
+}   
+    
+#footer {
+	background: #ddd;
+	height:35%;	
+	width:100%;
+	color: #aaa;
+	padding-top: 50px;
+	margin-top:450px;
+	position: absolute;
+	text-align:center;
+}
+
